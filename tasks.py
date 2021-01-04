@@ -1,0 +1,8 @@
+from celery import Celery
+app = Celery('tasks', backend='rpc://', broker='pyamqp://')
+@app.task  
+def add(x,y):
+    return x+y
+
+app.start()
+#celery -A tasks worker --loglevel=INFO
