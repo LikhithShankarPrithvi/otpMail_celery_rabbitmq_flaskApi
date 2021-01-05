@@ -1,3 +1,5 @@
 import random
-otp=random.randint(1111,9999)
-print(otp)
+
+def otp():
+    otp=random.randint(1111,9999)
+    return(otp)
