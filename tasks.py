@@ -1,8 +1,25 @@
 from celery import Celery
-app = Celery('tasks', backend='rpc://', broker='pyamqp://')
+
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        backend=app.config['CELERY_RESULT_BACKEND'],
+        broker=app.config['CELERY_BROKER_URL']
+    )
+    celery.conf.update(app.config)
+
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery.Task = ContextTask
+    return celery
+
+"""app = Celery('tasks', backend='rpc://', broker='pyamqp://')
 @app.task  
 def add(x,y):
     return x+y
 
-app.start()
+app.start()"""
 #celery -A tasks worker --loglevel=INFO
