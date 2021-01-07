@@ -1,6 +1,4 @@
 # API for OTP mail Sender
 
-Done with creating backend,sending mail and generating otp 
-Need to place things in place
-
-See ya in few days.
+Using Celery and RabbitMQ create a asynchronous OTP emailing task
+Using Flask implement an API to the task.
